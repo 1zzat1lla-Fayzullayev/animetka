@@ -101,7 +101,7 @@ function TopAnimeCards() {
               <img
                 src={item.image_url}
                 alt={item.name}
-                className="w-full object-cover rounded-[20px] h-[300px]"
+                className="w-full object-cover rounded-[20px] h-[400px] md:h-[300px]"
               />
               <div className="text-center">{item.name}</div>
             </div>
