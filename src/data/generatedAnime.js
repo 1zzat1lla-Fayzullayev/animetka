@@ -642,3 +642,4 @@ export const generatedAnime = [
     name: "Истории ран",
   },
 ];
+
