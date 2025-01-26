@@ -1,6 +1,8 @@
 {
     "rewrites": [
-      { "source": "/anime_data", "destination": "https://animetka.ru/anime_data" }
+      { "source": "/anime_data", "destination": "https://animetka.ru/anime_data" },
+      {"source": "/(.*)", "destination": "/"}
     ]
   }
+  
   
