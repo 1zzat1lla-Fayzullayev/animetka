@@ -1,10 +1,17 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
 
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  build: {
-    outDir: 'dist', 
+  server: {
+    proxy: {
+      "/anime_data": {
+        target: "https://animetka.ru", 
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
 });

@@ -10,13 +10,12 @@ function SinglePage() {
   const [error, setError] = useState(null);
   const [selectedEpisode, setSelectedEpisode] = useState(null);
   const [videoUrl, setVideoUrl] = useState(null);
-  const [videoPlaying, setVideoPlaying] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false); 
 
   useEffect(() => {
     const fetchAnimeData = async (id) => {
       try {
-        const response = await fetch(`/api/anime_data?sid=${id}`);
-
+        const response = await fetch(`/anime_data?sid=${id}`);
         if (!response.ok) {
           throw new Error("So'rov muvaffaqiyatsiz bo'ldi");
         }
@@ -46,7 +45,7 @@ function SinglePage() {
   };
 
   const handleVideoPlay = () => {
-    setVideoPlaying(true);
+    setVideoPlaying(true); 
   };
 
   if (loading) {
