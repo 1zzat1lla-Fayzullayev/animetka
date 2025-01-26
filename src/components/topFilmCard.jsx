@@ -5,9 +5,11 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { topFilm } from "../data/topFilm";
 import { useRef, useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 function TopFilmCard() {
   const swiperRef = useRef(null);
+  const navigate = useNavigate();
 
   const [isPrevDisabled, setIsPrevDisabled] = useState(true);
   const [isNextDisabled, setIsNextDisabled] = useState(false);
@@ -41,6 +43,10 @@ function TopFilmCard() {
       imageUrl: `${item.image_url}?w=400&h=300&fit=crop`,
     }));
   }, [topFilm]);
+
+  const handleCardClick = (id) => {
+    navigate(`/movie/${id}`);
+  };
 
   return (
     <div className="relative">
@@ -99,7 +105,10 @@ function TopFilmCard() {
       >
         {optimizedImages.map((item, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col gap-1 mb-10 transition-all ease-in md:hover:scale-105 mt-2">
+            <div
+              className="flex flex-col gap-1 mb-10 transition-all ease-in md:hover:scale-105 mt-2"
+              onClick={() => handleCardClick(item.id)}
+            >
               <img
                 src={item.imageUrl}
                 alt={item.name}
