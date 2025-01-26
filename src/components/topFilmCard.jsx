@@ -99,11 +99,11 @@ function TopFilmCard() {
           <SwiperSlide key={index}>
             <div className="flex flex-col gap-1 mb-10">
               <img
-                src={item.image}
-                alt={item.title}
+                src={item.image_url}
+                alt={item.name}
                 className="w-full object-cover rounded-[20px] h-[400px] md:h-[300px]"
               />
-              <div className="text-center">{item.title}</div>
+              <div className="text-center">{item.name}</div>
             </div>
           </SwiperSlide>
         ))}
