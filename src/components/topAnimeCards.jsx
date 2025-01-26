@@ -5,10 +5,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { recomendationAnime } from "../data/recomendationAnime";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Navigation } from "swiper/modules";
+import { useNavigate } from "react-router-dom";
 
 function TopAnimeCards() {
   const swiperRef = useRef(null);
-
+  const navigate = useNavigate();
   const [isPrevDisabled, setIsPrevDisabled] = useState(true);
   const [isNextDisabled, setIsNextDisabled] = useState(false);
 
@@ -38,7 +39,7 @@ function TopAnimeCards() {
   const optimizedImages = useMemo(() => {
     return recomendationAnime.map((item) => ({
       ...item,
-      optimizedImageUrl: `${item.image_url}?w=400&h=300&fit=crop`, 
+      optimizedImageUrl: `${item.image_url}?w=400&h=300&fit=crop`,
     }));
   }, [recomendationAnime]);
 
@@ -48,6 +49,10 @@ function TopAnimeCards() {
       img.src = item.optimizedImageUrl;
     });
   }, [optimizedImages]);
+
+  const handleCardClick = (id) => {
+    navigate(`/movie/${id}`);
+  };
 
   return (
     <div className="relative">
@@ -106,9 +111,12 @@ function TopAnimeCards() {
       >
         {optimizedImages.map((item, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col gap-1 mb-10 transition-all ease-in md:hover:scale-105 mt-2">
+            <div
+              className="flex flex-col gap-1 mb-10 transition-all ease-in md:hover:scale-105 mt-2"
+              onClick={() => handleCardClick(item.id)}
+            >
               <img
-                src={item.optimizedImageUrl} 
+                src={item.optimizedImageUrl}
                 alt={item.name}
                 className="w-full object-cover rounded-[20px] h-[300px]"
               />

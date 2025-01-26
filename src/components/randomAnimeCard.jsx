@@ -6,9 +6,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { generatedAnime } from "../data/generatedAnime";
 import { Autoplay } from "swiper/modules";
+import { useNavigate } from "react-router-dom";
 
 const RandomAnimeCard = React.memo(() => {
   const [randomAnime, setRandomAnime] = useState([]);
+  const navigate = useNavigate();
   const swiperRef = useRef(null);
   const [isPrevDisabled, setIsPrevDisabled] = useState(true);
   const [isNextDisabled, setIsNextDisabled] = useState(false);
@@ -56,6 +58,10 @@ const RandomAnimeCard = React.memo(() => {
       image: `${item.image}?w=400&h=300&fit=crop`,
     }));
   }, [randomAnime]);
+
+  const handleCardClick = (id) => {
+    navigate(`/movie/${id}`);
+  };
 
   return (
     <div className="relative">
@@ -115,7 +121,10 @@ const RandomAnimeCard = React.memo(() => {
       >
         {optimizedImages.map((item, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col gap-1 mb-10 select-none transition-all ease-in md:hover:scale-105 mt-2">
+            <div
+              className="flex flex-col gap-1 mb-10 select-none transition-all ease-in md:hover:scale-105 mt-2"
+              onClick={() => handleCardClick(item.id)}
+            >
               <img
                 src={item.image}
                 alt={item.name}
