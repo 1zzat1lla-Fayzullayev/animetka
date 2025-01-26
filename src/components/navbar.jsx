@@ -5,11 +5,11 @@ function Navbar() {
     <nav className="w-full bg-[#14161A] text-white py-4 shadow-md">
       <Wrapper>
         <ul className="flex items-center justify-between w-full flex-wrap gap-4 md:gap-0">
-          <div className="flex items-center gap-6 md:gap-10">
+          <div className="flex w-full md:w-auto items-center justify-between gap-6 md:gap-10">
             <li className="text-2xl font-bold cursor-pointer hover:text-gray-400 text-start">
               AniMetka
             </li>
-            <div className="hidden md:flex items-center gap-8">
+            <div className="flex items-center gap-8">
               <li className="cursor-pointer hover:text-gray-400">Home</li>
               <li className="cursor-pointer hover:text-gray-400">Time</li>
             </div>
@@ -23,11 +23,6 @@ function Navbar() {
             />
           </div>
         </ul>
-
-        <div className="flex md:hidden mt-4 gap-4 list-none">
-          <li className="cursor-pointer hover:text-gray-400">Home</li>
-          <li className="cursor-pointer hover:text-gray-400">Time</li>
-        </div>
       </Wrapper>
     </nav>
   );
