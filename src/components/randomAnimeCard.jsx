@@ -3,7 +3,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { generatedAnime } from "../data/generatedAnime";
 import { Autoplay } from "swiper/modules";
 
@@ -49,6 +49,13 @@ const RandomAnimeCard = React.memo(() => {
       setIsNextDisabled(isEnd);
     }
   };
+
+  const optimizedImages = useMemo(() => {
+    return randomAnime.map((item) => ({
+      ...item,
+      image: `${item.image}?w=400&h=300&fit=crop`,
+    }));
+  }, [randomAnime]);
 
   return (
     <div className="relative">
@@ -106,9 +113,9 @@ const RandomAnimeCard = React.memo(() => {
         }}
         className="mySwiper"
       >
-        {randomAnime.map((item, index) => (
+        {optimizedImages.map((item, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col gap-1 mb-10 select-none">
+            <div className="flex flex-col gap-1 mb-10 select-none transition-all ease-in md:hover:scale-105 mt-2">
               <img
                 src={item.image}
                 alt={item.name}

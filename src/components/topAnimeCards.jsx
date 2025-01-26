@@ -3,7 +3,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { recomendationAnime } from "../data/recomendationAnime";
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Navigation } from "swiper/modules";
 
 function TopAnimeCards() {
@@ -35,6 +35,20 @@ function TopAnimeCards() {
     }
   };
 
+  const optimizedImages = useMemo(() => {
+    return recomendationAnime.map((item) => ({
+      ...item,
+      optimizedImageUrl: `${item.image_url}?w=400&h=300&fit=crop`, 
+    }));
+  }, [recomendationAnime]);
+
+  useEffect(() => {
+    optimizedImages.forEach((item) => {
+      const img = new Image();
+      img.src = item.optimizedImageUrl;
+    });
+  }, [optimizedImages]);
+
   return (
     <div className="relative">
       <button
@@ -64,7 +78,6 @@ function TopAnimeCards() {
           prevEl: ".swiper-prev",
           nextEl: ".swiper-next",
         }}
-     
         modules={[Navigation]}
         onSlideChange={handleSlideChange}
         breakpoints={{
@@ -91,11 +104,11 @@ function TopAnimeCards() {
         }}
         className="mySwiper"
       >
-        {recomendationAnime.map((item, index) => (
+        {optimizedImages.map((item, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col gap-1 mb-10">
+            <div className="flex flex-col gap-1 mb-10 transition-all ease-in md:hover:scale-105 mt-2">
               <img
-                src={item.image_url}
+                src={item.optimizedImageUrl} 
                 alt={item.name}
                 className="w-full object-cover rounded-[20px] h-[300px]"
               />

@@ -4,7 +4,7 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { topFilm } from "../data/topFilm";
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 
 function TopFilmCard() {
   const swiperRef = useRef(null);
@@ -34,6 +34,13 @@ function TopFilmCard() {
       setIsNextDisabled(isEnd);
     }
   };
+
+  const optimizedImages = useMemo(() => {
+    return topFilm.map((item) => ({
+      ...item,
+      imageUrl: `${item.image_url}?w=400&h=300&fit=crop`,
+    }));
+  }, [topFilm]);
 
   return (
     <div className="relative">
@@ -90,11 +97,11 @@ function TopFilmCard() {
         }}
         className="mySwiper"
       >
-        {topFilm.map((item, index) => (
+        {optimizedImages.map((item, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col gap-1 mb-10">
+            <div className="flex flex-col gap-1 mb-10 transition-all ease-in md:hover:scale-105 mt-2">
               <img
-                src={item.image_url}
+                src={item.imageUrl}
                 alt={item.name}
                 className="w-full object-cover rounded-[20px] h-[300px]"
               />
