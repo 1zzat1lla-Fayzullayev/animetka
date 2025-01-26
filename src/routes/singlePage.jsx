@@ -10,7 +10,7 @@ function SinglePage() {
   const [error, setError] = useState(null);
   const [selectedEpisode, setSelectedEpisode] = useState(null);
   const [videoUrl, setVideoUrl] = useState(null);
-  const [videoPlaying, setVideoPlaying] = useState(false); 
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
     const fetchAnimeData = async (id) => {
@@ -20,13 +20,18 @@ function SinglePage() {
           throw new Error("So'rov muvaffaqiyatsiz bo'ldi");
         }
 
-        const data = await response.json();
-        setAnimeData(data);
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("application/json")) {
+          const data = await response.json();
+          setAnimeData(data);
 
-        if (data.skipdata && data.skipdata.length > 0) {
-          const firstEpisode = data.skipdata[0];
-          setSelectedEpisode(firstEpisode.episode);
-          setVideoUrl(firstEpisode.skips?.hd || firstEpisode.skips?.sd || "");
+          if (data.skipdata && data.skipdata.length > 0) {
+            const firstEpisode = data.skipdata[0];
+            setSelectedEpisode(firstEpisode.episode);
+            setVideoUrl(firstEpisode.skips?.hd || firstEpisode.skips?.sd || "");
+          }
+        } else {
+          throw new Error("Xatolik: JSON formatida ma'lumot olinmadi.");
         }
       } catch (err) {
         setError(err.message);
@@ -45,7 +50,7 @@ function SinglePage() {
   };
 
   const handleVideoPlay = () => {
-    setVideoPlaying(true); 
+    setVideoPlaying(true);
   };
 
   if (loading) {
