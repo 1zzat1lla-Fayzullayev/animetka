@@ -1,7 +1,7 @@
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Autoplay, Navigation } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { topFilm } from "../data/topFilm";
 import { useRef, useState } from "react";
@@ -30,8 +30,8 @@ function TopFilmCard() {
       const isBeginning = swiperInstance.isBeginning;
       const isEnd = swiperInstance.isEnd;
 
-      setIsPrevDisabled(isBeginning); 
-      setIsNextDisabled(isEnd); 
+      setIsPrevDisabled(isBeginning);
+      setIsNextDisabled(isEnd);
     }
   };
 
@@ -64,13 +64,8 @@ function TopFilmCard() {
           prevEl: ".swiper-prev",
           nextEl: ".swiper-next",
         }}
-        autoplay={{
-          delay: 2000,
-          disableOnInteraction: false,
-          waitForTransition: true,
-        }}
-        modules={[Navigation, Autoplay]}
-        onSlideChange={handleSlideChange} 
+        modules={[Navigation]}
+        onSlideChange={handleSlideChange}
         breakpoints={{
           320: {
             slidesPerView: 2,

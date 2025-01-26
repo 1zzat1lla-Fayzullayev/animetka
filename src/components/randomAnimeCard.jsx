@@ -1,12 +1,13 @@
+/* eslint-disable react/display-name */
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { generatedAnime } from "../data/generatedAnime";
 import { Autoplay } from "swiper/modules";
 
-function RandomAnimeCard() {
+const RandomAnimeCard = React.memo(() => {
   const [randomAnime, setRandomAnime] = useState([]);
   const swiperRef = useRef(null);
   const [isPrevDisabled, setIsPrevDisabled] = useState(true);
@@ -120,6 +121,6 @@ function RandomAnimeCard() {
       </Swiper>
     </div>
   );
-}
+});
 
 export default RandomAnimeCard;

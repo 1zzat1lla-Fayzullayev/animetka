@@ -1,15 +1,17 @@
-import RandomAnime from "../components/randomAnime"
-import TopAnime from "../components/topAnime"
-import TopFilm from "../components/topFilm"
+/* eslint-disable react/display-name */
+import React from "react";
+import RandomAnime from "../components/randomAnime";
+import TopAnime from "../components/topAnime";
+import TopFilm from "../components/topFilm";
 
-function Home() {
+const Home = React.memo(() => {
   return (
     <>
-     <RandomAnime />
+      <RandomAnime />
       <TopAnime />
       <TopFilm />
     </>
-  )
-}
+  );
+});
 
-export default Home
+export default Home;

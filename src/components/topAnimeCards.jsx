@@ -4,7 +4,7 @@ import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { recomendationAnime } from "../data/recomendationAnime";
 import { useRef, useState } from "react";
-import { Autoplay, Navigation } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 
 function TopAnimeCards() {
   const swiperRef = useRef(null);
@@ -64,12 +64,8 @@ function TopAnimeCards() {
           prevEl: ".swiper-prev",
           nextEl: ".swiper-next",
         }}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-          waitForTransition: true,
-        }}
-        modules={[Navigation, Autoplay]}
+     
+        modules={[Navigation]}
         onSlideChange={handleSlideChange}
         breakpoints={{
           320: {
