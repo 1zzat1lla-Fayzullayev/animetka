@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Wrapper from "../layout/wrapper";
 
 function Navbar() {
@@ -10,7 +11,9 @@ function Navbar() {
               AniMetka
             </li>
             <div className="flex items-center gap-8">
-              <li className="cursor-pointer hover:text-gray-400">Home</li>
+              <li className="cursor-pointer hover:text-gray-400">
+                <Link to={"/"}>Home</Link>
+              </li>
               <li className="cursor-pointer hover:text-gray-400">Time</li>
             </div>
           </div>

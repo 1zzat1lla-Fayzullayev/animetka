@@ -2,15 +2,13 @@
 /* eslint-disable react/no-unknown-property */
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Wrapper from "../layout/wrapper";
 
 function SinglePage() {
   const { id } = useParams();
   const [animeData, setAnimeData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedEpisode, setSelectedEpisode] = useState(null);
-  const [videoUrl, setVideoUrl] = useState(null);
-  const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
     const fetchAnimeData = async (id) => {
@@ -24,12 +22,6 @@ function SinglePage() {
         if (contentType && contentType.includes("application/json")) {
           const data = await response.json();
           setAnimeData(data);
-
-          if (data.skipdata && data.skipdata.length > 0) {
-            const firstEpisode = data.skipdata[0];
-            setSelectedEpisode(firstEpisode.episode);
-            setVideoUrl(firstEpisode.skips?.hd || firstEpisode.skips?.sd || "");
-          }
         } else {
           throw new Error("Xatolik: JSON formatida ma'lumot olinmadi.");
         }
@@ -42,16 +34,6 @@ function SinglePage() {
 
     fetchAnimeData(id);
   }, [id]);
-
-  const handleEpisodeChange = (episode) => {
-    const episodeData = animeData.skipdata.find((e) => e.episode === episode);
-    setSelectedEpisode(episode);
-    setVideoUrl(episodeData?.skips?.hd || episodeData?.skips?.sd || null);
-  };
-
-  const handleVideoPlay = () => {
-    setVideoPlaying(true);
-  };
 
   if (loading) {
     return (
@@ -70,83 +52,66 @@ function SinglePage() {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold text-center mb-4">{animeData.title}</h1>
-      <img
-        src={animeData.poster_url || animeData.anime_poster_url}
-        alt={animeData.title}
-        className="w-[300px] rounded-lg my-4 mx-auto"
-      />
+    <div>
+      <Wrapper>
+        <div className="w-full md:h-screen xl:h-[600px] mt-[40px]">
+          <iframe
+            id="kodik-player"
+            title="Video player frame"
+            src={`https://animetka.ru${animeData.link}`}
+            frameborder="0"
+            allowfullscreen=""
+            allow="autoplay *; fullscreen *"
+            className="w-full h-full rounded-[20px]"
+          ></iframe>
+        </div>
 
-      <p className="text-lg leading-relaxed mb-4">
-        {animeData.anime_description || "Tavsif mavjud emas."}
-      </p>
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold">Ma'lumotlar:</h2>
-        <ul>
-          <li>Yili: {animeData.year}</li>
-          <li>Janrlar: {animeData.genres?.join(", ")}</li>
-          <li>Studio: {animeData.anime_studios?.join(", ")}</li>
-          <li>Rejissor: {animeData.directors?.join(", ")}</li>
-        </ul>
-      </div>
-
-      {animeData.skipdata && animeData.skipdata.length > 0 && (
-        <div>
-          <h2 className="text-xl font-semibold mb-2">Qismlar:</h2>
-          <div className="flex space-x-2 overflow-x-auto">
-            {animeData.skipdata.map((episodeData, index) => (
-              <button
-                key={index}
-                className={`px-4 py-2 rounded-lg ${
-                  selectedEpisode === episodeData.episode
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200"
-                }`}
-                onClick={() => handleEpisodeChange(episodeData.episode)}
-              >
-                {episodeData.episode}-qism
-              </button>
-            ))}
+        <div className="flex mt-[20px] items-start gap-[10px]">
+          <div className="w-[40%] h-[550px]">
+            <img
+              src={animeData.poster_url || animeData.anime_poster_url}
+              alt={animeData.title}
+              className="w-full h-full object-cover rounded-lg"
+            />
           </div>
 
-          {videoUrl ? (
-            <div className="mt-4">
-              <iframe
-                src={videoUrl}
-                controls
-                className="w-[400px] rounded-lg"
-                onPlay={handleVideoPlay}
-              />
-            </div>
-          ) : (
-            <div className="text-center text-red-500 mt-4">
-              Video mavjud emas
-            </div>
-          )}
-        </div>
-      )}
+          <div className="w-full">
+            <div className="rating flex items-center justify-between w-full">
+              <div className="flex-col mt-4">
+                <div className="flex items-center gap-2">
+                  <img src="/star.png" className="w-[30px]" />
+                  <h4 className="font-medium text-[20px]">
+                    {animeData.shikimori_rating}
+                  </h4>
+                </div>
+                <span className="text-[#808080] text-[12px]">
+                  на основании {animeData.shikimori_votes} оценок
+                </span>
+              </div>
 
-      {/* <div className={`play_background ${videoPlaying ? "hidden" : "block"}`}>
-        <div className="relative w-full">
-          <img
-            src={animeData.screenshots[0]}
-            className={`absolute top-0 left-0 w-[400px]  transition-opacity duration-1000 ${
-              videoPlaying ? "opacity-0" : "opacity-100"
-            }`}
-            alt="Screenshot 1"
-          />
-          <img
-            src={animeData.screenshots[1]}
-            className={`absolute top-0 left-0 w-[400px]  transition-opacity duration-1000 ${
-              videoPlaying ? "opacity-0" : "opacity-100"
-            }`}
-            alt="Screenshot 2"
-          />
+              <p className="bg-red-500 w-[40px] h-[40px] flex justify-center items-center rounded-[50%]">
+                {animeData.minimal_age}+
+              </p>
+            </div>
+            <h1 className="text-2xl font-bold mt-3">⛩️ {animeData.title}</h1>
+            <span className="text-[#808080] text-[12px]">
+              {animeData.title_en}
+            </span>
+            <ul>
+              <li>📺{animeData.anime_kind && "ТВ-спешиал"}</li>
+              <li>📀 {animeData.all_status && "Завершён"}</li>
+              <li>📼{animeData.year}</li>
+              <li>🕑{animeData.duration} мин</li>
+            </ul>
+          </div>
         </div>
-
-        <button>Play</button>
-      </div> */}
+        <div>
+          <h1 className="text-center font-[700] text-[25px] mt-[20px]">
+            Описание
+          </h1>
+          <p className="text-sm">{animeData.description}</p>
+        </div>
+      </Wrapper>
     </div>
   );
 }
