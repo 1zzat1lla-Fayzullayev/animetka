@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/no-unknown-property */
 import { useEffect, useState } from "react";
@@ -38,23 +39,15 @@ function SinglePage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        Yuklanmoqda...
+        Загрузка...
       </div>
     );
-  }
-
-  if (error) {
-    return <div className="text-center text-red-500">Xatolik: {error}</div>;
-  }
-
-  if (!animeData) {
-    return <div className="text-center">Ma'lumot topilmadi</div>;
   }
 
   return (
     <div>
       <Wrapper>
-        <div className="w-full md:h-screen xl:h-[600px] mt-[40px]">
+        <div className="w-full h-[300px] md:h-[600px] mt-[40px]">
           <iframe
             id="kodik-player"
             title="Video player frame"
@@ -67,7 +60,7 @@ function SinglePage() {
         </div>
 
         <div className="flex mt-[20px] items-start gap-[10px]">
-          <div className="w-[40%] h-[550px]">
+          <div className="w-[40%] h-[550px] hidden sm:block">
             <img
               src={animeData.poster_url || animeData.anime_poster_url}
               alt={animeData.title}
@@ -105,12 +98,14 @@ function SinglePage() {
             </ul>
           </div>
         </div>
-        <div>
-          <h1 className="text-center font-[700] text-[25px] mt-[20px]">
-            Описание
-          </h1>
-          <p className="text-sm">{animeData.description}</p>
-        </div>
+        {animeData.description && (
+          <div>
+            <h1 className="text-center font-[700] text-[25px] mt-[20px]">
+              Описание
+            </h1>
+            <p className="text-sm">{animeData.description}</p>
+          </div>
+        )}
       </Wrapper>
     </div>
   );
