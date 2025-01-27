@@ -59,6 +59,19 @@ function SinglePage() {
           ></iframe>
         </div>
 
+        {
+          animeData.link.includes('/serial') &&  <div className="pler flex flex-row items-center gap-2 mt-3">
+          <h3 className="text-sm font-bold">Плеер:</h3>
+
+          <select name="serial" id="serial" className="px-2 outline-none bg-[#171717]">
+            <option value="1">1 серия</option>
+            <option value="2">2 серия</option>
+            <option value="3">3 серия</option>
+            <option value="4">4 серия</option>
+          </select>
+        </div>
+        }
+
         <div className="flex mt-[20px] items-start gap-[10px]">
           <div className="w-[40%] h-[550px] hidden sm:block">
             <img
@@ -103,7 +116,7 @@ function SinglePage() {
             <h1 className="text-center font-[700] text-[25px] mt-[20px]">
               Описание
             </h1>
-            <p className="text-sm">{animeData.description}</p>
+            <p className="text-sm mb-3">{animeData.description}</p>
           </div>
         )}
       </Wrapper>

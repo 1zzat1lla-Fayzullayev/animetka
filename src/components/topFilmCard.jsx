@@ -3,8 +3,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { topFilm } from "../data/topFilm";
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function TopFilmCard() {
@@ -13,6 +12,44 @@ function TopFilmCard() {
 
   const [isPrevDisabled, setIsPrevDisabled] = useState(true);
   const [isNextDisabled, setIsNextDisabled] = useState(false);
+
+  const [topFilms, setTopFilms] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const shuffleArray = (array) => {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled.slice(0, 30);
+    };
+
+    try {
+      const response = await fetch(
+        `https://kodikapi.com/list?token=9ff26e8818a90b10c0acbe923f701971&types=anime&with_episodes=true&with_material_data=true`
+      );
+      if (!response.ok) {
+        throw new Error("Ma'lumotni yuklashda xatolik yuz berdi.");
+      }
+      const data = await response.json();
+      if (data.results && data.results.length > 0) {
+        console.log("dasdasd", data.results[0].screenshots[0]);
+        const selectedAnime = shuffleArray(data.results);
+        setTopFilms(selectedAnime);
+      } else {
+        throw new Error("Ma'lumot topilmadi.");
+      }
+    } catch (err) {
+      console.log(err.message);
+    } finally {
+      console.log(false);
+    }
+  };
 
   const handlePrev = () => {
     if (swiperRef.current) {
@@ -37,37 +74,34 @@ function TopFilmCard() {
     }
   };
 
-  const optimizedImages = useMemo(() => {
-    return topFilm.map((item) => ({
-      ...item,
-      imageUrl: `${item.image_url}?w=400&h=300&fit=crop`,
-    }));
-  }, [topFilm]);
-
   const handleCardClick = (id) => {
     navigate(`/movie/${id}`);
   };
 
   return (
     <div className="relative">
-      <button
-        className={`absolute top-[40%] left-0 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-lg z-[10] border-[2px] cursor-pointer border-red-500 ${
-          isPrevDisabled ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-        onClick={handlePrev}
-        disabled={isPrevDisabled}
-      >
-        <img src="/left-arrow.svg" className="w-[35px]" />
-      </button>
-      <button
-        className={`absolute top-[40%] right-0 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-lg z-[10] border-[2px] cursor-pointer border-red-500 ${
-          isNextDisabled ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-        onClick={handleNext}
-        disabled={isNextDisabled}
-      >
-        <img src="/right-arrow.svg" className="w-[35px]" />
-      </button>
+      {topFilms.length !== 0 && (
+        <button
+          className={`absolute top-[40%] left-0 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-lg z-[10] border-[2px] cursor-pointer border-red-500 ${
+            isPrevDisabled ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          onClick={handlePrev}
+          disabled={isPrevDisabled}
+        >
+          <img src="/left-arrow.svg" className="w-[35px]" />
+        </button>
+      )}
+      {topFilms.length !== 0 && (
+        <button
+          className={`absolute top-[40%] right-0 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-lg z-[10] border-[2px] cursor-pointer border-red-500 ${
+            isNextDisabled ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          onClick={handleNext}
+          disabled={isNextDisabled}
+        >
+          <img src="/right-arrow.svg" className="w-[35px]" />
+        </button>
+      )}
 
       <Swiper
         ref={swiperRef}
@@ -103,21 +137,27 @@ function TopFilmCard() {
         }}
         className="mySwiper"
       >
-        {optimizedImages.map((item, index) => (
+        {topFilms.map((item, index) => (
           <SwiperSlide key={index}>
             <div
-              className="flex flex-col gap-1 mb-10 transition-all ease-in md:hover:scale-105 mt-2"
+              className="flex flex-col cursor-pointer gap-1 mb-10 transition-all ease-in md:hover:scale-105 mt-2"
               onClick={() => handleCardClick(item.id)}
             >
               <img
-                src={item.imageUrl}
-                alt={item.name}
+                src={item?.material_data?.poster_url}
+                alt={item?.material_data?.title_en}
                 className="w-full object-cover rounded-[20px] h-[300px]"
               />
-              <div className="text-center">{item.name}</div>
+              <div className="text-center line-clamp-2">
+                {item?.material_data?.title}
+              </div>
             </div>
           </SwiperSlide>
         ))}
+
+        {topFilms.length === 0 && (
+          <h3 className="font-mono text-xl text-center">Loading ...</h3>
+        )}
       </Swiper>
     </div>
   );

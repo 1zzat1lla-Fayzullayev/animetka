@@ -7,9 +7,10 @@ export default defineConfig({
   server: {
     proxy: {
       "/anime_data": {
-        target: "https://animetka.ru",
-        changeOrigin: true,
-        secure: false,
+        target: 'https://kodikapi.com/list',
+        changeOrigin: true, 
+        
+        secure: true, 
       },
     },
   },

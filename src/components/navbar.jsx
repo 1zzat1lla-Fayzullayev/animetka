@@ -8,7 +8,8 @@ function Navbar() {
         <ul className="flex items-center justify-between w-full flex-wrap gap-4 md:gap-0">
           <div className="flex w-full md:w-auto items-center justify-between gap-6 md:gap-10">
             <li className="text-2xl font-bold cursor-pointer hover:text-gray-400 text-start">
-              AniMetka
+              <Link to={'/'}>
+              AniMetka</Link>
             </li>
             <div className="flex items-center gap-8">
               <li className="cursor-pointer hover:text-gray-400">
