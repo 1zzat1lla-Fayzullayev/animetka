@@ -3,7 +3,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { useEffect,  useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Navigation } from "swiper/modules";
 import { useNavigate } from "react-router-dom";
 
@@ -14,21 +14,26 @@ function TopAnimeCards() {
   const [isNextDisabled, setIsNextDisabled] = useState(false);
   const [topAnime, setGopAnime] = useState([]);
 
-   useEffect(() => {
-      fetchData();
-    }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
-    const shuffleArray = (data,topCount = 18) => {
+    const shuffleArray = (data, topCount = 30) => {
       const sortedData = [...data].sort((a, b) => {
-        const ratingA = a.material_data?.kinopoisk_rating || a.material_data?.imdb_rating || 0;
-        const ratingB = b.material_data?.kinopoisk_rating || b.material_data?.imdb_rating || 0;
-        return ratingB - ratingA; // Descending order
+        const ratingA =
+          a.material_data?.kinopoisk_rating ||
+          a.material_data?.imdb_rating ||
+          0;
+        const ratingB =
+          b.material_data?.kinopoisk_rating ||
+          b.material_data?.imdb_rating ||
+          0;
+        return ratingB - ratingA;
       });
-    
-      // Return the top `topCount` items
+
       return sortedData.slice(0, topCount);
-        };
+    };
 
     try {
       const response = await fetch(
@@ -39,7 +44,7 @@ function TopAnimeCards() {
       }
       const data = await response.json();
       if (data.results && data.results.length > 0) {
-        console.log("dasdasd", data.results[0].screenshots[0]);
+        
         const selectedAnime = shuffleArray(data.results);
         setGopAnime(selectedAnime);
       } else {
@@ -50,6 +55,15 @@ function TopAnimeCards() {
     } finally {
       console.log(false);
     }
+  };
+
+  const filterUnique = (data) => {
+    const seen = new Set();
+    return data.filter((item) => {
+      const isDuplicate = seen.has(item.title);
+      seen.add(item.title);
+      return !isDuplicate;
+    });
   };
 
   const handlePrev = () => {
@@ -74,7 +88,6 @@ function TopAnimeCards() {
       setIsNextDisabled(isEnd);
     }
   };
-
 
   const handleCardClick = (id) => {
     navigate(`/movie/${id}`);
@@ -139,7 +152,7 @@ function TopAnimeCards() {
         }}
         className="mySwiper"
       >
-        {topAnime.map((item, index) => (
+        {filterUnique(topAnime).map((item, index) => (
           <SwiperSlide key={index}>
             <div
               className="flex flex-col cursor-pointer gap-1 mb-10 transition-all ease-in md:hover:scale-105 mt-2"
@@ -157,7 +170,7 @@ function TopAnimeCards() {
           </SwiperSlide>
         ))}
 
-{topAnime.length === 0 && (
+        {topAnime.length === 0 && (
           <h3 className="font-mono text-xl text-center">Loading ...</h3>
         )}
       </Swiper>

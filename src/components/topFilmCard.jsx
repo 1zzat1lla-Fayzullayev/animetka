@@ -38,7 +38,7 @@ function TopFilmCard() {
       }
       const data = await response.json();
       if (data.results && data.results.length > 0) {
-        console.log("dasdasd", data.results[0].screenshots[0]);
+        
         const selectedAnime = shuffleArray(data.results);
         setTopFilms(selectedAnime);
       } else {
@@ -50,6 +50,17 @@ function TopFilmCard() {
       console.log(false);
     }
   };
+
+
+  const filterUnique = (data) => {
+    const seen = new Set();
+    return data.filter((item) => {
+      const isDuplicate = seen.has(item.title);
+      seen.add(item.title);
+      return !isDuplicate;
+    });
+  };
+
 
   const handlePrev = () => {
     if (swiperRef.current) {
@@ -137,7 +148,7 @@ function TopFilmCard() {
         }}
         className="mySwiper"
       >
-        {topFilms.map((item, index) => (
+        {filterUnique(topFilms).map((item, index) => (
           <SwiperSlide key={index}>
             <div
               className="flex flex-col cursor-pointer gap-1 mb-10 transition-all ease-in md:hover:scale-105 mt-2"
