@@ -167,7 +167,7 @@ function SinglePage() {
             <ul>
               <li>📺{animeData.material_data.anime_kind && "ТВ-спешиал"}</li>
               <li>📀 {animeData.material_data.all_status == "ongoing" ?  "Незаконченный" :"Завершён"}</li>
-              <li>📼{animeData.material_data.year}</li>
+              <li>📼{animeData.year}</li>
               <li>🕑{animeData.material_data.duration} мин</li>
             </ul>
           </div>

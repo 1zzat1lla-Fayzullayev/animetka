@@ -88,6 +88,7 @@ function Navbar() {
                 <ul className="list-none p-2">
                   {filteredResults.map((item, index) => (
                     <li
+                    onClick={()=> window.open(`/media/${item.id}`, "_current")}
                       key={index}
                       className="p-2 text-white text-center text-sm hover:bg-[#383A3D] rounded-md cursor-pointer"
                     >
