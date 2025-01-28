@@ -6,7 +6,7 @@ const HistoryPage = () => {
   useEffect(() => {
     const storedHistory = JSON.parse(localStorage.getItem("viewHistory")) || [];
 
-    console.log(storedHistory)
+    console.log(storedHistory);
     setHistory(storedHistory);
   }, []);
 
@@ -17,7 +17,7 @@ const HistoryPage = () => {
       <div className="cards-content mx-2 mt-4 flex flex-row flex-wrap gap-4">
         {history.map((item, index) => (
           <div
-            onClick={() => window.open(`/media/${item.mediaId}`, "_current")}
+            onClick={() => window.open(`/movie/${item.mediaId}`, "_current")}
             key={index}
             className="flex flex-col max-w-[250px] md:max-w-[300px] cursor-pointer gap-1 mb-10 transition-all ease-in md:hover:scale-105 mt-2"
           >
@@ -30,8 +30,9 @@ const HistoryPage = () => {
           </div>
         ))}
 
-        {(history.length == 0) &&
-        <p className="text-lg font-bold text-center w-full">История нету.</p>}
+        {history.length == 0 && (
+          <p className="text-lg font-bold text-center w-full">История нету.</p>
+        )}
       </div>
     </div>
   );

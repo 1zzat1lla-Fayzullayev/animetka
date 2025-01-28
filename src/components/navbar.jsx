@@ -26,8 +26,6 @@ function Navbar() {
         const api1Data = await api1Response.json();
         const api2Data = await api2Response.json();
 
-        
-
         const combinedData = [...api1Data.results, ...api2Data.results];
         setData(combinedData);
       } catch (error) {
@@ -52,8 +50,8 @@ function Navbar() {
 
     setFilteredResults(results);
 
-    if(query === ""){
-      setFilteredResults([])
+    if (query === "") {
+      setFilteredResults([]);
     }
   };
 
@@ -70,11 +68,12 @@ function Navbar() {
                 <Link to={"/"}>Главной </Link>
               </li>
               <li className="cursor-pointer hover:text-gray-400">
-              <Link to={"/history"}>История</Link></li>
+                <Link to={"/history"}>История</Link>
+              </li>
             </div>
           </div>
 
-          <div className="flex relative items-center gap-3 max-w-[250px] w-full md:w-auto lg:w-full">
+          <div className="flex z-20 relative items-center gap-3 max-w-[250px] w-full md:w-auto lg:w-full">
             <input
               type="text"
               placeholder="Поиск аниме"
@@ -88,7 +87,9 @@ function Navbar() {
                 <ul className="list-none p-2">
                   {filteredResults.map((item, index) => (
                     <li
-                    onClick={()=> window.open(`/media/${item.id}`, "_current")}
+                      onClick={() =>
+                        window.open(`/movie/${item.id}`, "_current")
+                      }
                       key={index}
                       className="p-2 text-white text-center text-sm hover:bg-[#383A3D] rounded-md cursor-pointer"
                     >
@@ -111,6 +112,11 @@ function Navbar() {
               </div>
             )}
           </div>
+
+          {
+            filteredResults.length > 0 && <div onClick={()=> {setFilteredResults([], setSearchTerm(""))}} className="bg-bl fixed  z-10 top-0 left-0 w-full h-screen">
+          </div>
+          }
         </ul>
       </Wrapper>
     </nav>
